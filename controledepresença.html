@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar e Gráfico de Presença de Alunos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM/eqFf2eNJYw4KmcX4RiwkzOnWiNH8xV5NvoGh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+            margin: 0;
+            transition: margin-left .5s;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: -250px;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 25px;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .main-content {
+            padding: 16px;
+            transition: margin-left .5s;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidebar {padding-top: 15px;}
+            .sidebar a {font-size: 18px;}
+        }
+
+        .chart-container {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#"><i class="fas fa-home"></i> Home</a>
+    <a href="#"><i class="fas fa-user"></i> About</a>
+    <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+    <a href="#"><i class="fas fa-cog"></i> Settings</a>
+</div>
+
+<div class="main-content" id="main-content">
+    <button class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
+    <h2>Responsive Sidebar Example</h2>
+    <p>Click on the hamburger menu/icon to open the sidebar, and click on the "x" to close it.</p>
+    
+    <div class="chart-container">
+        <canvas id="attendanceChart"></canvas>
+    </div>
+</div>
+
+<script>
+    function openNav() {
+        document.getElementById("sidebar").style.left = "0";
+        document.getElementById("main-content").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("sidebar").style.left = "-250px";
+        document.getElementById("main-content").style.marginLeft = "0";
+    }
+
+    // Dados de presença
+    const data = {
+        labels: ['Presentes', 'Ausentes'],
+        datasets: [{
+            label: 'Presença dos Alunos',
+            data: [80, 20], // Exemplo: 80 presentes e 20 ausentes
+            backgroundColor: [
+                'rgba(75, 192, 75, 0.5)',
+                'rgba(255, 99, 99, 0.5)'
+            ],
+            borderColor: [
+                'rgba(75, 192, 75, 1)',
+                'rgba(255, 99, 99, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Configuração do gráfico
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            indexAxis: 'y',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Gráfico de Presença de Alunos'
+                }
+            }
+        },
+    };
+
+    // Renderização do gráfico
+    const attendanceChart = new Chart(
+        document.getElementById('attendanceChart'),
+        config
+    );
+</script>
+
+</body>
+</html>

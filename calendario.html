@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário com Lembretes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .calendar {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .month-year {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .prev-next {
+            cursor: pointer;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day {
+            padding: 10px;
+            text-align: center;
+            background-color: #eee;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .day:hover {
+            background-color: #ddd;
+        }
+
+        .day.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .add-reminder {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .reminder-input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        .add-button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .reminder {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Calendário com Lembretes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="./tela1.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Calendário <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Lembretes</a>
+                </li>
+            </ul>
+        </div>
+    </nav><br><br><br><br>
+    <h1>Calendário com Lembretes</h1>
+
+    <div class="calendar">
+        <div class="calendar-header">
+            <div class="prev-next" id="prevMonth">&#10094;</div>
+            <div class="month-year" id="monthYear"></div>
+            <div class="prev-next" id="nextMonth">&#10095;</div>
+        </div>
+        <div class="days" id="calendarDays"></div>
+        <div class="add-reminder">
+            <input type="text" id="reminderInput" class="reminder-input" placeholder="Adicione um lembrete">
+            <button id="addReminder" class="add-button">Adicionar Lembrete</button>
+        </div>
+    </div>
+
+    <script>
+        // Função para obter o nome do mês
+        function getMonthName(monthIndex) {
+            const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            return months[monthIndex];
+        }
+
+        // Função para criar o calendário
+        function createCalendar(year, month) {
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDay = firstDay.getDay();
+
+            const calendarDays = document.getElementById("calendarDays");
+            calendarDays.innerHTML = "";
+
+            // Preencher os dias vazios no início do mês
+            for (let i = 0; i < startingDay; i++) {
+                const day = document.createElement("div");
+                day.classList.add("day");
+                calendarDays.appendChild(day);
+            }
+
+            // Preencher os dias do mês
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = document.createElement("div");
+                day.classList.add("day");
+                day.textContent = i;
+                day.setAttribute("data-date", `${year}-${month + 1}-${i}`);
+                day.addEventListener("click", () => {
+                    handleDayClick(day);
+                });
+                calendarDays.appendChild(day);
+            }
+
+            // Exibir o nome do mês e do ano
+            const monthYear = document.getElementById("monthYear");
+            monthYear.textContent = getMonthName(month) + " " + year;
+        }
+
+        // Função para lidar com o clique em um dia
+        function handleDayClick(dayElement) {
+            const selectedDay = document.querySelector(".selected");
+            if (selectedDay) {
+                selectedDay.classList.remove("selected");
+            }
+            dayElement.classList.add("selected");
+        }
+
+        // Variáveis para controlar o mês e o ano
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        // Carregar o calendário inicial
+        createCalendar(currentYear, currentMonth);
+
+        // Botões para navegar entre os meses
+        document.getElementById("prevMonth").addEventListener("click", () => {
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear -= 1;
+            } else {
+                currentMonth -= 1;
+            }
+            createCalendar(currentYear, currentMonth);
+        });
+
+        document.getElementById("nextMonth").addEventListener("click", () => {
+            if (currentMonth === 11) {
+                currentMonth = 0;
+
+
+                currentYear += 1;
+            } else {
+                currentMonth += 1;
+            }
+            createCalendar(currentYear, currentMonth);
+        });
+
+        // Adicionar lembretes
+        document.getElementById("addReminder").addEventListener("click", () => {
+            const reminderInput = document.getElementById("reminderInput").value.trim();
+            if (reminderInput !== "") {
+                const selectedDay = document.querySelector(".selected");
+                if (selectedDay) {
+                    const reminder = document.createElement("div");
+                    reminder.classList.add("reminder");
+                    reminder.textContent = reminderInput;
+                    selectedDay.appendChild(reminder);
+                    document.getElementById("reminderInput").value = "";
+                } else {
+                    alert("Selecione um dia no calendário para adicionar um lembrete.");
+                }
+            } else {
+                alert("Digite um lembrete válido.");
+            }
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

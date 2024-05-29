@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso de Ciências da Computação</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url(../Novo\ projeto\ cadastro/BPbRheL1VK1wU4WLrdZFR-transformed);
+            background-size: cover; /* Para garantir que a imagem cubra todo o corpo */
+            background-position: center; /* Para centralizar a imagem */
+            background-repeat: no-repeat; /* Para evitar a repetição da imagem */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: #333;
+            color: white;
+            height: 100%;
+            position: fixed;
+            overflow-y: auto;
+            padding-top: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .sidebar .semester-content {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .sidebar .semester-content.active {
+            display: block;
+        }
+
+        .sidebar .semester-content a {
+            padding: 10px 15px;
+            background-color: #444;
+        }
+
+        .sidebar .semester-content a:hover {
+            background-color: #666;
+        }
+
+        .sidebar .semester-content a.active {
+            background-color: #575757;
+        }
+
+        .sidebar .subgroup {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .sidebar .subgroup.show {
+            display: block;
+        }
+
+        .content {
+            margin-left: 300px;
+            padding: 20px;
+            flex-grow: 1;
+            transition: margin-left 0.3s ease;
+        }
+
+        .sidebar .close-btn {
+            display: none;
+            font-size: 30px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .open-btn {
+            display: none;
+            font-size: 30px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1001;
+        }
+
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-300px);
+                width: 100%;
+                position: fixed;
+                z-index: 1000;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar .close-btn,
+            .open-btn {
+                display: block;
+            }
+        }
+
+        .pdf-container {
+            flex-grow: 1;
+            height: 100%;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .logout-btn {
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+            border: none;
+            width: 100%;
+        }
+
+        .logout-btn:hover {
+            background-color: #c9302c;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-logout {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background-color: #c9302c;
+        }
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-modal-content {
+            background-color: rgb(78, 78, 78);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-modal-content video {
+            width: 50%;
+            height: auto;
+        }
+
+        .video-modal-content .close-video-btn {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .video-modal-content .close-video-btn:hover {
+            background-color: #c9302c;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <button class="open-btn" onclick="toggleSidebar()">&#9776;</button>
+
+    <div class="sidebar" id="sidebar">
+        <h3 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; text-align: center;">
+            Ciências da Computação
+        </h3>
+        <br>
+        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        <a href="#" data-semester="semester1">1º Semestre</a>
+        <div id="semester1" class="semester-content">
+            <a href="#" data-pdf="Introdução Ciência da Computação.pdf">Introdução à Programação - Prof. Luiz</a>
+            <div class="subgroup">
+                <a href="#" data-pdf="AulaIntrodução à Programação.pdf">Aula</a>
+                <a href="#" onclick="openVideo('videos/aula1.mp4')">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="../Novo projeto cadastro/quiz.html" onclick="open('Novo projeto cadastro/quiz.html')">Quiz</a>
+            </div>
+            <a href="#" data-pdf="IntroducaoComputacao.pdf">Lógica de Programação - Prof. Maria</a>
+            <div class="subgroup">
+                <a href="#" data-pdf="Aula Lógica de Programação.pdf">Aula</a>
+                <a href="#" onclick="openVideo('videos/aula2.mp4')">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="../Novo projeto cadastro/quiz.html" onclick="open('Novo projeto cadastro/quiz.html')" >Quiz</a>
+            </div>
+            <a href="#" data-pdf="IntroducaoComputacao.pdf">Matemática Discreta - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="IntroducaoComputacao.pdf">Introdução à Teoria da Computação - Prof. Carlos</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+        </div>
+        <!-- Continuar com outras matérias do semestre 1 -->
+        <a href="#" data-semester="semester2">2º Semestre</a>
+        <div id="semester2" class="semester-content">
+            <a href="#" data-pdf="IntroducaoComputacao.pdf">Fundamentos de Redes de Computadores - Prof. Rafael</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="IntroducaoComputacao.pdf">Introdução à Arquitetura de Computadores - Prof. Kevin</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="IntroducaoComputacao.pdf">Iniciação Científica em Ciência da Computação - Prof. Renan</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="IntroducaoComputacao.pdf">Habilidades de Comunicação e Redação Técnica - Prof. Ana Paula</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+        </div>
+        <!-- Continuar com outras matérias do semestre 2 -->
+        <!-- Continuar com outras matérias do semestre 2 -->
+        <a href="#" data-semester="semester3">3º Semestre</a>
+        <div id="semester3" class="semester-content">
+            <a href="#" data-pdf="MatematicaII.pdf">Estruturas de Dados - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaII.pdf">Algoritmos - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaII.pdf">Programação Orientada a Objetos - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaII.pdf">Teoria da Computação Avançada - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+        </div>
+        <!-- Continuar com outras matérias do semestre 3 -->
+        <a href="#" data-semester="semester4">4º Semestre</a>
+        <div id="semester4" class="semester-content">
+            <a href="#" data-pdf="MatematicaII.pdf">Sistemas Operacionais - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaII.pdf">Matemática para Ciência da Computação - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaII.pdf">Bancos de Dados - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaII.pdf">Desenvolvimento Web - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+        </div>
+        <!-- Continuar com outras matérias do semestre 4 -->
+        <a href="#" data-semester="semester5">5º Semestre</a>
+        <div id="semester5" class="semester-content">
+            <a href="#" data-pdf="MatematicaV.pdf">Engenharia de Software - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaV.pdf">Linguagens de Programação (avançado) - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaV.pdf">Redes de Computadores (avançado) - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaV.pdf">Inteligência Artificial - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+        </div>
+        <!-- Continuar com outras matérias do semestre 5 -->
+        <a href="#" data-semester="semester6">6º Semestre</a>
+        <div id="semester6" class="semester-content">
+            <a href="#" data-pdf="MatematicaVI.pdf">Segurança da Informação - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaVI.pdf">Computação em Nuvem - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaVI.pdf">Análise de Dados - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaVI.pdf">Projeto de Desenvolvimento de Software - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+        </div>
+        <!-- Continuar com outras matérias do semestre 6 -->
+        <a href="#" data-semester="semester7">7º Semestre</a>
+        <div id="semester7" class="semester-content">
+            <a href="#" data-pdf="MatematicaVII.pdf">Tópicos Avançados em Ciência da Computação - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaVII.pdf">Computação Gráfica, Processamento de Linguagem Natural - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaVII.pdf">Projeto de Conclusão de Curso - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="MatematicaVII.pdf">Estágio ou Trabalho de Pesquisa - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+        </div>
+        <!-- Continuar com outras matérias do semestre 7 -->
+        <a href="#" data-semester="semester8">8º Semestre</a>
+        <div id="semester8" class="semester-content">
+            <a href="#" data-pdf="TCC1.pdf">Ética em Computação - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="TCC1.pdf">Desenvolvimento de Aplicativos Móveis - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="TCC1.pdf">Empreendedorismo em Tecnologia - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="TCC1.pdf">Seminários em Ciência da Computação - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            <a href="#" data-pdf="TCC1.pdf">Preparação para a Transição para o Mercado de Trabalho - Prof. João</a>
+            <div class="subgroup">
+                <a href="#">Aula</a>
+                <a href="#">Videoaula</a>
+                <a href="#">Biblioteca</a>
+                <a href="#">Quiz</a>
+            </div>
+            
+            <!-- Adicione outras matérias e subgrupos conforme necessário -->
+            
+        </div>
+        <!-- Continuar com outras matérias do semestre 8 -->
+        <button class="logout-btn" onclick="openModal()">Sair</button>
+    </div>
+    <div class="content">
+        <div class="pdf-container">
+            <iframe id="pdf-frame" src=""></iframe>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Deseja realmente sair?</h2>
+            <button class="btn-logout" onclick="redirectToScreen1()">Sim, sair</button>
+            <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-content">
+            <video id="videoPlayer" controls>
+                <source src="" type="video/mp4">
+                Seu navegador não suporta o elemento de vídeo.
+            </video>
+            <button class="close-video-btn" onclick="closeVideo()">Fechar</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.sidebar a[data-semester]').forEach(function (semesterLink) {
+                semesterLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    let semesterId = this.getAttribute('data-semester');
+                    document.querySelectorAll('.semester-content').forEach(function (semesterContent) {
+                        semesterContent.classList.remove('active');
+                    });
+                    document.getElementById(semesterId).classList.add('active');
+                });
+            });
+
+            document.querySelectorAll('.sidebar .semester-content a').forEach(function(pdfLink) {
+                pdfLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.sidebar .semester-content a').forEach(function (link) {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    let pdfFile = this.getAttribute('data-pdf');
+                    document.getElementById('pdf-frame').src = pdfFile;
+                });
+            });
+
+            document.querySelectorAll('.sidebar .semester-content a').forEach(function (semesterLink) {
+                semesterLink.addEventListener('click', function (e) {
+                    var subgroup = this.nextElementSibling;
+                    if (subgroup.classList.contains('show')) {
+                        subgroup.classList.remove('show');
+                    } else {
+                        document.querySelectorAll('.sidebar .semester-content .subgroup').forEach(function (sub) {
+                            sub.classList.remove('show');
+                        });
+                        subgroup.classList.add('show');
+                    }
+                });
+            });
+        });
+
+        function toggleSidebar() {
+            let sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        function openModal() {
+            var modal = document.getElementById('modal');
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            var modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        function redirectToScreen1() {
+            window.location.href = 'tela1.html'; // Substitua 'tela1.html' pelo caminho da sua tela 1
+        }
+
+        function openVideo(videoLink) {
+            var videoModal = document.getElementById('videoModal');
+            var videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = videoLink;
+            videoModal.style.display = 'flex';
+        }
+        function openVideo(src) {
+            document.getElementById('videoPlayer').src = src;
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+        function closeVideo() {
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('videoPlayer').src = '';
+        }
+        function advanceVideo(seconds) {
+            const video = document.getElementById('videoPlayer');
+            video.currentTime += seconds;
+        }
+        function toggleFullScreen() {
+            const video = document.getElementById('videoPlayer');
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.mozRequestFullScreen) { // Firefox
+                video.mozRequestFullScreen();
+            } else if (video.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) { // IE/Edge
+                video.msRequestFullscreen();
+            }
+        }
+        function showLogo() {
+            document.getElementById('pdf-frame').src = '';
+            document.getElementById('logoContainer').style.display = 'flex';
+        }
+    </script>
+</body>
+
+</html>
+
+

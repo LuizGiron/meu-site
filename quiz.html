@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            margin-bottom: 10px;
+        }
+        .option label {
+            display: block;
+            cursor: pointer;
+            background-color: #666666;
+            border-radius: 5px;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+            color: #fff;
+        }
+        .option label:hover {
+            background-color: #555;
+        }
+        .button-container {
+            text-align: center;
+        }
+        .next-button,
+        .finish-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .next-button:hover,
+        .finish-button:hover {
+            background-color: #45a049;
+        }
+        .result-message {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #4CAF50;
+        }
+        select {
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #656565;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Quiz</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="./tela1.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./materias.html">Curso</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Resultados</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <br><h1>Quiz</h1>
+
+    <div class="quiz-container">
+        <label for="subject">Escolha a matéria:</label>
+        <select id="subject"><br>
+            <option value="math">Introdução à Programação</option><br><br><br>
+            <option value="science">Lógica de Programação</option><br>
+            <!-- Adicione mais opções de matéria conforme necessário -->
+        </select><br>
+        <div id="quiz">
+            <!-- Questões do quiz serão adicionadas aqui via JavaScript -->
+        </div>
+        <div id="result-message" class="result-message" style="display: none;">Teste finalizado com sucesso!</div>
+    </div>
+
+    <script>
+        const questions = {
+            math: [
+                { 
+                    question: "Qual é a definição de algoritmo?",
+                    options: ["a) Uma ferramenta de edição de texto", "b) Uma sequência de passos finitos que descreve um processo para resolver um problema", "c) Um tipo de dado numérico", "d) Uma linguagem de programação popular", "e) Um ambiente de desenvolvimento integrado"]
+                },
+                { 
+                    question: "Qual das seguintes opções é uma linguagem de programação?",
+                    options: ["a) Word", "b) Excel", "c) Photoshop", "d) Python", "e) PowerPoint"]
+                },
+                { 
+                    question: "O que são variáveis em programação?",
+                    options: ["a) Ferramentas de edição de imagem", "b) Espaços na memória do computador onde você armazena informações", "c) Comandos de impressão", "d) Tipos de dados numéricos", "e) Nenhum dos anteriores"]
+                },
+                { 
+                    question: "Qual é a função das estruturas condicionais em programação?",
+                    options: ["a) Controlar o fluxo de execução de um programa", "b) Armazenar informações na memória", "c) Repetir um conjunto de instruções várias vezes", "d) Exibir mensagens na tela", "e) Nenhuma das anteriores"]
+                },
+                { 
+                    question: "O que são IDEs em programação?",
+                    options: ["a) Ferramentas que facilitam a edição de vídeos", "b) Ambientes de desenvolvimento integrado", "c) Softwares de edição de áudio", "d) Redes neurais artificiais", "e) Nenhuma das anteriores"]
+                }
+            ],
+            science: [
+                { 
+                    question: "Qual é o objetivo principal da lógica de programação?",
+                    options: ["A) Criar interfaces gráficas complexas", "B) Desenvolver algoritmos para resolver problemas", "C) Escrever textos literários", "D) Programar jogos de vídeo game", "E) Nenhuma das alternativas anteriores"]
+                },
+                { 
+                    question: "O que são algoritmos?",
+                    options: ["A) Dispositivos eletrônicos", "B) Soluções matemáticas complexas", "C) Sequências de passos finitos e bem definidos para resolver um problema", "D) Ferramentas de design gráfico", "E) Nenhuma das alternativas anteriores"]
+                },
+                { 
+                    question: "Qual é a função das variáveis em programação?",
+                    options: ["A) Controlar o fluxo de execução do programa", "B) Armazenar valores que podem ser modificados durante aexecução do programa", "C) Desenhar elementos gráficos na tela", "D) Realizar operações matemáticas", "E) Nenhuma das alternativas anteriores"]
+},
+{
+question: "Qual é o principal propósito das estruturas de controle em programação?",
+options: ["A) Controlar o acesso a recursos do sistema", "B) Armazenar grandes volumes de dados", "C) Definir a estrutura de um banco de dados", "D) Controlar o fluxo de execução do programa", "E) Nenhuma das alternativas anteriores"]
+},
+{
+question: "O que são laços de repetição em programação?",
+options: ["A) Estruturas para executar tarefas em paralelo", "B) Técnicas para evitar repetições de código", "C) Blocos de código que só são executados uma vez", "D) Estruturas para repetir um bloco de código várias vezes até que uma condição seja atendida", "E) Nenhuma das alternativas anteriores"]
+}
+]
+};    let currentQuestion = 0;
+    let selectedAnswers = {};
+
+    function createQuestion(subject) {
+        const quizContainer = document.getElementById('quiz');
+        quizContainer.innerHTML = '';
+
+        const questionData = questions[subject][currentQuestion];
+
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+        questionDiv.innerHTML = `
+            <div class="question-text">${questionData.question}</div>
+            <ul class="options">
+                ${questionData.options.map((option, index) => `
+                    <li class="option"><label><input type="radio" name="answer" value="${index}">${option}</label></li>
+                `).join('')}
+            </ul>
+        `;
+        quizContainer.appendChild(questionDiv);
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('button-container');
+
+        if (currentQuestion < questions[subject].length - 1) {
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Próxima';
+            nextButton.classList.add('next-button');
+            nextButton.addEventListener('click', () => {
+                saveAnswer(subject);
+                currentQuestion++;
+                createQuestion(subject);
+            });
+            buttonContainer.appendChild(nextButton);
+        } else {
+            const finishButton = document.createElement('button');
+            finishButton.textContent = 'Finalizar';
+            finishButton.classList.add('finish-button');
+            finishButton.addEventListener('click', () => {
+                saveAnswer(subject);
+                finishQuiz();
+            });
+            buttonContainer.appendChild(finishButton);
+        }
+
+        quizContainer.appendChild(buttonContainer);
+    }
+
+    function saveAnswer(subject) {
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        if (selectedOption) {
+            selectedAnswers[currentQuestion] = selectedOption.value;
+        }
+    }
+
+    function finishQuiz() {
+        console.log('Respostas:', selectedAnswers);
+        const resultMessage = document.getElementById('result-message');
+        resultMessage.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const subjectSelect = document.getElementById('subject');
+        subjectSelect.addEventListener('change', (event) => {
+            currentQuestion = 0;
+            selectedAnswers = {};
+            createQuestion(event.target.value);
+            document.getElementById('result-message').style.display = 'none';
+        });
+    });
+</script>
+</body>
+</html>

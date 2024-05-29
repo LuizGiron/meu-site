@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="padding-top: 0%;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <img src="./img/BPbRheL1VK1wU4WLrdZFR-transformed.png" style="height: auto; width: 80px ; margin-left: 20px;" class="img-fluid" alt="..."><br>
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="telainicial.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="cadastrohtml.html">Cadastro</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="telalogin.html">Login</a>
+              </li>
+            </ul>
+            <span class="navbar-text">
+              
+            </span>
+          </div>
+        </div>
+      </nav><br>
+    <div id="main-container">
+        <img src="./img/BPbRheL1VK1wU4WLrdZFR-transformed.png" class="logo" style="width: 180px; height: auto; margin-left: 135px;"><br><br><br>
+        <!--<h1 style="color: #41b47a;">Cadastre-se</h1><br>-->
+        <form id="register-form">
+            <div class="full-box">
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" placeholder="Insira seu email" required>
+            </div>
+            <div class="half-box spacing">
+                <label for="name">Nome</label>
+                <input type="text" name="name" id="name" placeholder="Insira seu nome" required>
+            </div>
+            <div class="half-box">
+                <label for="lastname">Sobrenome</label>
+                <input type="text" name="lastname" id="lastname" placeholder="Insira seu Sobrenome" required>
+            </div>
+            <div class="half-box">
+                <label for="password">Senha</label>
+                <input type="password" name="password" id="password" placeholder="Insira sua Senha" required>
+            </div>
+            <div class="half-box">
+                <label for="passconfirmation">Confirme sua Senha</label>
+                <input type="password" name="passconfirmation" id="passconfirmation" placeholder="Confirme sua Senha" required>
+            </div>
+            <div class="full-box">
+                <input type="checkbox" name="agreement" id="agreement" required>
+                <label for="agreement" id="agreement-label">Eu li e aceito os <a href="#">termos de uso</a></label>
+            </div>
+            <div class="full-box">
+                <a heref="#"><input type="submit" id="btn-submit" value="Registrar"></a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Pop-up de erro -->
+    <div id="error-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <p id="error-message"></p>
+        </div>
+    </div>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, sans-serif;
+    color: #323232;
+    border: none;
+}
+
+input, label {
+    display: block;
+    width: 98%;
+}
+
+input:focus, label:focus {
+    outline: none;
+} 
+
+a{
+    color: #0534ce;
+}
+
+body {
+    padding-top: 5vh;
+    background-image: linear-gradient(to right, #010028 30%, #1f409d );
+    background-size: cover;
+    background-position-y: -150px;
+}
+
+
+
+#main-container {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fafafa;
+    border-radius: 10px;
+    padding: 25px;
+}
+#main-container h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+}
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.full-box {
+    flex: 1 1 100%;
+    position: relative;
+}
+.half-box {
+    flex: 1 1 45%;
+    position: relative;
+}
+.spacing {
+    margin-right: 2.5%;
+}
+label {
+    font-weight: bold;
+    font-size: .8rem;
+}
+input {
+    border-bottom: 2px solid #323232;
+    padding: 5px;
+    font-size: .9rem;
+    margin-bottom: 40px;
+}
+input:focus {
+    border-color: #41b47a;
+}
+input[type="submit"] {
+    background-color: #41b47a;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    height: 40px;
+    cursor: pointer;
+}
+#agreement {
+    margin-right: 5px;
+}
+#agreement, #agreement-label {
+    display: inline-block;
+    width: auto;
+}
+.error-validation {
+    color: #ff1a1a;
+    position: absolute;
+    top: 57px;
+    font-size: .8rem;
+}
+.template {
+    display: none;
+    
+}
+.popup {
+    display: none; /* Oculta o pop-up por padrão */
+    position: fixed;
+    z-index: 9999; /* Garante que o pop-up apareça na frente de outros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo escuro semi-transparente */
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    max-width: 400px;
+    position: relative;
+}
+
+.popup-content .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.popup-content .close:hover,
+.popup-content .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

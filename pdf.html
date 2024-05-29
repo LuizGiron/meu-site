@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Viewer with Sidebar</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+    }
+    .sidebar {
+      width: 250px;
+      height: 100%;
+      background-color: #f8f9fa;
+      padding: 15px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      overflow-y: auto;
+    }
+    .sidebar a {
+      display: block;
+      padding: 10px;
+      margin-bottom: 10px;
+      color: #007bff;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #e9ecef;
+    }
+    .pdf-container {
+      flex-grow: 1;
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <a href="../Novo projeto cadastro/Introdução Ciência da Computação.pdf" data-pdf="Introdução Ciência da Computação.pdf">Matéria 1</a>
+    <a href="#" data-pdf="path/to/second.pdf">Matéria 2</a>
+    <a href="#" data-pdf="path/to/third.pdf">Matéria 3</a>
+    <!-- Adicione mais links conforme necessário -->
+  </div>
+
+  <div class="pdf-container">
+    <iframe id="pdf-iframe" src=""></iframe>
+  </div>
+
+  <script>
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const pdfPath = this.getAttribute('data-pdf');
+        document.getElementById('pdf-iframe').src = pdfPath;
+      });
+    });
+  </script>
+
+</body>
+</html>
